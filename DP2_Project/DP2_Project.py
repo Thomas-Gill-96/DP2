@@ -44,8 +44,35 @@ def Generate_Text_Entry(masterFrame, labelTitle, anchoredPos, paddingX, paddingY
 	tempLabel.pack(anchor = anchoredPos, padx = paddingX, pady = paddingY)
 	tempEntry.pack(anchor = anchoredPos, padx = paddingX, pady = paddingY)
 
+def Unlock_Accept_Button():
+	for button in subMenuFrame.winfo_children():
+		if(button['text'] == "Accept"):
+			button['state'] = NORMAL
+			break
+
+def Unlock_Cancel_Button():
+	for button in subMenuFrame.winfo_children():
+		if(button['text'] == "Cancel"):
+			button['state'] = NORMAL
+			break
+
+def Unlock_Export_Button():
+	for button in subMenuFrame.winfo_children():
+		if(button['text'] == "Export"):
+			button['state'] = NORMAL
+			break
+
+def Lock_Sub_Buttons():
+	for button in subMenuFrame.winfo_children():
+		button['state'] = DISABLED
+
 def Add_Stock_Callback():
+
 	Clear_Overlay()
+
+	Unlock_Accept_Button()
+	Unlock_Cancel_Button()
+
 	Title_Label_Creation("Add a Stock Item")
 	stockOverlayFrame = Frame(
 		overlayFrame,
@@ -58,6 +85,8 @@ def Add_Stock_Callback():
 	Generate_Text_Entry(stockOverlayFrame, "Date", CENTER, 5, (5, 5), 10)
 	Create_Empty_Frame(stockOverlayFrame, 100)
 	Generate_Text_Entry(stockOverlayFrame, "Stock Name", W, 5, (0, 5), 20)
+	Create_Empty_Frame(stockOverlayFrame, 20)
+	Generate_Text_Entry(stockOverlayFrame, "Stock Price", W, 5, (0, 5), 20)
 	stockOverlayFrame.pack()
 
 def Add_Sales_Record_Callback():
@@ -73,6 +102,14 @@ def Add_Sales_Record_Callback():
 		)
 	stockOverlayFrame.pack_propagate(False)
 	Generate_Text_Entry(stockOverlayFrame, "Date", CENTER, 5, (5, 5), 10)
+
+	Create_Empty_Frame(stockOverlayFrame, 200)
+
+	#Move to a function laterz
+	stockNameLabel = Label(
+		
+		)
+
 	stockOverlayFrame.pack()
 
 def Edit_Sales_Record_Callback():
@@ -120,6 +157,19 @@ def Generate_Sales_Report_Callback():
 	Generate_Text_Entry(stockOverlayFrame, "Date", CENTER, 5, (5, 5), 10)
 	stockOverlayFrame.pack()
 
+def Accept_Button_Callback():
+	print("I Accepted Something")
+	Lock_Sub_Buttons()
+
+def Cancel_Button_Callback():
+	print("I Canceled Something")
+	Clear_Overlay()
+	Lock_Sub_Buttons()
+
+def Export_Button_Callback():
+	print("I Exported Something")
+	Clear_Overlay()
+	Lock_Sub_Buttons()
 
 #Generates and fills content for the title frame
 def Initialise_Title_Frame():
@@ -221,8 +271,8 @@ def Initialise_Sub_Menu_Frame():
 		font = buttonFont,
 		bg = LIGHTGRAY,
 		fg = ALMOSTBLACK,
-		state = DISABLED
-		#command = Clear_Overlay
+		state = DISABLED,
+		command = Export_Button_Callback
 		)
 	exportButton.pack(side = LEFT, anchor = W)
 
@@ -234,8 +284,8 @@ def Initialise_Sub_Menu_Frame():
 		font = buttonFont,
 		bg = LIGHTGRAY,
 		fg = ALMOSTBLACK,
-		state = DISABLED
-		#command = Clear_Overlay
+		state = DISABLED,
+		command = Cancel_Button_Callback
 		)
 	cancelButton.pack(side = LEFT, anchor = CENTER)
 
@@ -247,8 +297,8 @@ def Initialise_Sub_Menu_Frame():
 		font = buttonFont,
 		bg = LIGHTGRAY,
 		fg = ALMOSTBLACK,
-		state = DISABLED
-		#command = Clear_Overlay
+		state = DISABLED,
+		command = Accept_Button_Callback
 		)
 	AcceptButton.pack(side = LEFT,anchor = E)
 
