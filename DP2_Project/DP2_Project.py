@@ -1,4 +1,5 @@
 from tkinter import *
+import InsertItem
 
 #Function Declarations
 
@@ -66,6 +67,108 @@ def Lock_Sub_Buttons():
 	for button in subMenuFrame.winfo_children():
 		button['state'] = DISABLED
 
+def Create_Sales_Record_Row(masterFrame, stockName, stockPrice, stockQuanity, totalPrice, paddingX, paddingY):
+	
+	tempRowFrame2 = Frame(
+		masterFrame,
+		borderwidth = 3,
+		relief = "ridge"
+		)
+	tempRowFrame2.pack(fill = X)
+	
+	stockNameFrame = Frame(
+		tempRowFrame2,
+		borderwidth = 3,
+		relief = "ridge",
+		height = 20
+		)
+	stockPriceFrame = Frame(
+		tempRowFrame2,
+		borderwidth = 3,
+		relief = "ridge",
+		height = 20
+		)
+	stockQuanityFrame = Frame(
+		tempRowFrame2,
+		borderwidth = 3,
+		relief = "ridge",
+		height = 20
+		)
+	totalPriceFrame = Frame(
+		tempRowFrame2,
+		borderwidth = 3,
+		relief = "ridge",
+		height = 20
+		)
+
+	stockNameFrame.pack(side = LEFT, fill = X, expand = 2.5)
+	stockPriceFrame.pack(side = LEFT, fill = X, expand = 1.0)
+	stockQuanityFrame.pack(side = LEFT, fill = X, expand = 1.0)
+	totalPriceFrame.pack(side = LEFT, fill = X, expand = 1.5)
+
+	tempRowFrame = Frame(
+		masterFrame,
+		borderwidth = 3,
+		relief = "ridge"
+		)
+	tempRowFrame.pack(fill = X)
+
+	stockNameEntry = Entry(
+		tempRowFrame,
+		width = 1,
+		borderwidth = 2,
+		relief = "sunken",
+		font = textFont
+		)
+	stockNameEntry.insert(0, stockName)
+
+	stockPriceEntry = Entry(
+		tempRowFrame,
+		width = 1,
+		borderwidth = 2,
+		relief = "sunken",
+		font = textFont
+		)
+	stockPriceEntry.insert(0, stockPrice)
+
+	stockQuanityEntry = Entry(
+		tempRowFrame,
+		width = 1,
+		borderwidth = 2,
+		relief = "sunken",
+		font = textFont
+		)
+	stockQuanityEntry.insert(0, stockQuanity)
+
+	totalPriceEntry = Entry(
+		tempRowFrame,
+		width = 1,
+		borderwidth = 2,
+		relief = "sunken",
+		font = textFont
+		)
+	totalPriceEntry.insert(0, totalPrice)
+
+	stockNameEntry.pack(side = LEFT, fill = X, anchor = W, expand = 2.5, padx = paddingX, pady = paddingY)
+	stockPriceEntry.pack(side = LEFT, fill = X, anchor = CENTER, expand = 1.0, padx = paddingX, pady = paddingY)
+	stockQuanityEntry.pack(side = LEFT, fill = X, anchor = CENTER, expand = 1.0, padx = paddingX, pady = paddingY)
+	totalPriceEntry.pack(side = LEFT, fill = X, anchor = CENTER, expand = 1.5, padx = paddingX, pady = paddingY)
+
+	print("Created a row of entries")
+
+def Create_Sales_Record_List(masterFrame):
+	tempMasterFrame = Frame(
+		masterFrame,
+		borderwidth = 5,
+		relief = "ridge"
+		)
+	tempMasterFrame.pack(fill = X)
+
+	for x in range(0, 4):
+		Create_Sales_Record_Row(tempMasterFrame, x, "", x, "", 20, 10)
+	overlayElementsMasterFrame = tempMasterFrame
+	print("Doing Things")
+
 def Add_Stock_Callback():
 
 	Clear_Overlay()
@@ -90,7 +193,12 @@ def Add_Stock_Callback():
 	stockOverlayFrame.pack()
 
 def Add_Sales_Record_Callback():
+	
 	Clear_Overlay()
+	Lock_Sub_Buttons()
+	Unlock_Accept_Button()
+	Unlock_Cancel_Button()
+
 	print("Adding a sales record....")
 	Title_Label_Creation("Add a Sales Record")
 	stockOverlayFrame = Frame(
@@ -103,17 +211,59 @@ def Add_Sales_Record_Callback():
 	stockOverlayFrame.pack_propagate(False)
 	Generate_Text_Entry(stockOverlayFrame, "Date", CENTER, 5, (5, 5), 10)
 
-	Create_Empty_Frame(stockOverlayFrame, 200)
+	Create_Empty_Frame(stockOverlayFrame, 50)
 
-	#Move to a function laterz
-	stockNameLabel = Label(
-		
+	#Move to a function later
+
+	#Header Frame
+	headerFrame = Frame(
+		stockOverlayFrame,
+		width = 480,
+		height = 10,
+		borderwidth = 2,
+		relief = "ridge"
 		)
+	headerFrame.pack(fill = X)
+	#expand = True
+	#Table Headers
+	stockNameLabel = Label(
+		headerFrame,
+		text = "Stock Name",
+		font = buttonFont,
+		bg = "white"
+		)
+	stockPriceLabel = Label(
+		headerFrame,
+		text = "Price",
+		font = buttonFont
+		)
+	stockQuanityLabel = Label(
+		headerFrame,
+		text = "Quanity",
+		font = buttonFont
+		)
+	totalPriceLabel = Label(
+		headerFrame,
+		text = "Total",
+		font = buttonFont
+		)
+	stockNameLabel.pack(side = LEFT, fill = X, anchor = CENTER, expand = 2.5)
+	stockPriceLabel.pack(side = LEFT, fill = X, anchor = CENTER, expand = 1.0)
+	stockQuanityLabel.pack(side = LEFT, fill = X, anchor = CENTER, expand = 1.0)
+	totalPriceLabel.pack(side = LEFT, fill = X, anchor = CENTER, expand = 1.5)
+
+	#List Stuff
+	Create_Sales_Record_List(stockOverlayFrame)
 
 	stockOverlayFrame.pack()
 
 def Edit_Sales_Record_Callback():
+	
 	Clear_Overlay()
+	Lock_Sub_Buttons()
+	Unlock_Accept_Button()
+	Unlock_Cancel_Button()
+
 	print("Editing a sales record....")
 	Title_Label_Creation("Edit a Sales Record")
 	stockOverlayFrame = Frame(
@@ -128,7 +278,13 @@ def Edit_Sales_Record_Callback():
 	stockOverlayFrame.pack()
 
 def Display_Sales_Record_Callback():
+	
 	Clear_Overlay()
+	Lock_Sub_Buttons()
+	Unlock_Accept_Button()
+	Unlock_Cancel_Button()
+	Unlock_Export_Button()
+
 	print("Displaying a sales record....")
 	Title_Label_Creation("Sales Record")
 	stockOverlayFrame = Frame(
@@ -143,7 +299,13 @@ def Display_Sales_Record_Callback():
 	stockOverlayFrame.pack()
 
 def Generate_Sales_Report_Callback():
+	
 	Clear_Overlay()
+	Lock_Sub_Buttons()
+	Unlock_Accept_Button()
+	Unlock_Cancel_Button()
+	Unlock_Export_Button()
+
 	print("Generating Sales Report....")
 	Title_Label_Creation("Sales Report")
 	stockOverlayFrame = Frame(
@@ -310,7 +472,12 @@ ALMOSTBLACK = "#292929"
 root = Tk()
 root.geometry('1280x960')
 phpLogo = PhotoImage(file="images/logo2.png")
-overlayFrameList = []
+#overlayFrameList = [] No used anymore, Delete if no use is found
+overlayListElements = [4]
+print(overlayListElements)
+
+#Overlay Elements Master Frame Reference
+overlayElementsMasterFrame = Frame
 
 #Title Frame Creation
 titleFrame = Frame(
