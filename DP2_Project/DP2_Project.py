@@ -1,5 +1,6 @@
 from tkinter import *
-import InsertItem
+import tkinter.font as tkfont
+#import InsertItem
 
 #Function Declarations
 
@@ -68,106 +69,67 @@ def Lock_Sub_Buttons():
 		button['state'] = DISABLED
 
 def Create_Sales_Record_Row(masterFrame, stockName, stockPrice, stockQuanity, totalPrice, paddingX, paddingY):
-	
-	tempRowFrame2 = Frame(
+	headerFrame1 = Frame(
 		masterFrame,
-		borderwidth = 3,
+		width = 480,
+		height = 10,
+		borderwidth = 2,
 		relief = "ridge"
 		)
-	tempRowFrame2.pack(fill = X)
-	
-	stockNameFrame = Frame(
-		tempRowFrame2,
-		borderwidth = 3,
-		relief = "ridge",
-		height = 20
-		)
-	stockPriceFrame = Frame(
-		tempRowFrame2,
-		borderwidth = 3,
-		relief = "ridge",
-		height = 20
-		)
-	stockQuanityFrame = Frame(
-		tempRowFrame2,
-		borderwidth = 3,
-		relief = "ridge",
-		height = 20
-		)
-	totalPriceFrame = Frame(
-		tempRowFrame2,
-		borderwidth = 3,
-		relief = "ridge",
-		height = 20
-		)
-
-	stockNameFrame.pack(side = LEFT, fill = X, expand = 2.5)
-	stockPriceFrame.pack(side = LEFT, fill = X, expand = 1.0)
-	stockQuanityFrame.pack(side = LEFT, fill = X, expand = 1.0)
-	totalPriceFrame.pack(side = LEFT, fill = X, expand = 1.5)
-
-	tempRowFrame = Frame(
-		masterFrame,
-		borderwidth = 3,
-		relief = "ridge"
-		)
-	tempRowFrame.pack(fill = X)
-
-	stockNameEntry = Entry(
-		tempRowFrame,
+	headerFrame1.pack(fill = X)
+	#expand = True
+	#Table Headers
+	stockNameLabel1 = Entry(
+		headerFrame1,
 		width = 1,
-		borderwidth = 2,
-		relief = "sunken",
-		font = textFont
+		font = buttonFont
 		)
-	stockNameEntry.insert(0, stockName)
-
-	stockPriceEntry = Entry(
-		tempRowFrame,
+	stockPriceLabel1 = Entry(
+		headerFrame1,
 		width = 1,
-		borderwidth = 2,
-		relief = "sunken",
-		font = textFont
+		font = buttonFont
 		)
-	stockPriceEntry.insert(0, stockPrice)
-
-	stockQuanityEntry = Entry(
-		tempRowFrame,
+	stockQuanityLabel1 = Entry(
+		headerFrame1,
 		width = 1,
-		borderwidth = 2,
-		relief = "sunken",
-		font = textFont
+		font = buttonFont
 		)
-	stockQuanityEntry.insert(0, stockQuanity)
-
-	totalPriceEntry = Entry(
-		tempRowFrame,
+	totalPriceLabel1 = Entry(
+		headerFrame1,
 		width = 1,
-		borderwidth = 2,
-		relief = "sunken",
-		font = textFont
+		font = buttonFont
 		)
-	totalPriceEntry.insert(0, totalPrice)
+	stockNameLabel1.pack(side = LEFT, fill = X, anchor = CENTER, expand = 2.5)
+	stockPriceLabel1.pack(side = LEFT, fill = X, anchor = CENTER, expand = 1.0)
+	stockQuanityLabel1.pack(side = LEFT, fill = X, anchor = CENTER, expand = 1.0)
+	totalPriceLabel1.pack(side = LEFT, fill = X, anchor = CENTER, expand = 1.5)
 
-	stockNameEntry.pack(side = LEFT, fill = X, anchor = W, expand = 2.5, padx = paddingX, pady = paddingY)
-	stockPriceEntry.pack(side = LEFT, fill = X, anchor = CENTER, expand = 1.0, padx = paddingX, pady = paddingY)
-	stockQuanityEntry.pack(side = LEFT, fill = X, anchor = CENTER, expand = 1.0, padx = paddingX, pady = paddingY)
-	totalPriceEntry.pack(side = LEFT, fill = X, anchor = CENTER, expand = 1.5, padx = paddingX, pady = paddingY)
+	#tempEntry = Entry(
+	#	masterFrame,
+	#	width = textBoxLength,
+	#	borderwidth = 2,
+	#	relief = "sunken",
+	#	font = textFont
+	#	)
 
 	print("Created a row of entries")
 
 def Create_Sales_Record_List(masterFrame):
-	tempMasterFrame = Frame(
-		masterFrame,
-		borderwidth = 5,
-		relief = "ridge"
-		)
-	tempMasterFrame.pack(fill = X)
+	
+#	
+#	tempMasterFrame = Frame(
+#		masterFrame,
+#		borderwidth = 5,
+#		relief = "ridge"
+#		)
+#	tempMasterFrame.pack(fill = X)
 
 	for x in range(0, 4):
-		Create_Sales_Record_Row(tempMasterFrame, x, "", x, "", 20, 10)
-	overlayElementsMasterFrame = tempMasterFrame
+		Create_Sales_Record_Row(masterFrame, x, "", x, "", 20, 10)
 	print("Doing Things")
+	
+	#overlayElementsMasterFrame = tempMasterFrame
+
 
 def Add_Stock_Callback():
 
@@ -193,7 +155,8 @@ def Add_Stock_Callback():
 	stockOverlayFrame.pack()
 
 def Add_Sales_Record_Callback():
-	
+	global overlayElementsMasterFrame
+
 	Clear_Overlay()
 	Lock_Sub_Buttons()
 	Unlock_Accept_Button()
@@ -209,13 +172,16 @@ def Add_Sales_Record_Callback():
 		relief = "ridge"
 		)
 	stockOverlayFrame.pack_propagate(False)
+	overlayElementsMasterFrame = stockOverlayFrame
 	Generate_Text_Entry(stockOverlayFrame, "Date", CENTER, 5, (5, 5), 10)
 
 	Create_Empty_Frame(stockOverlayFrame, 50)
 
 	#Move to a function later
-
+	zeroWidth = textHeaderFont.measure("0")
 	#Header Frame
+	labelWidth = (480/4)/zeroWidth
+	print(labelWidth)
 	headerFrame = Frame(
 		stockOverlayFrame,
 		width = 480,
@@ -229,33 +195,41 @@ def Add_Sales_Record_Callback():
 	stockNameLabel = Label(
 		headerFrame,
 		text = "Stock Name",
-		font = buttonFont,
-		bg = "white"
+		width = 13,
+		font = textHeaderFont
 		)
 	stockPriceLabel = Label(
 		headerFrame,
 		text = "Price",
-		font = buttonFont
+		width = 13,
+		font = textHeaderFont
 		)
 	stockQuanityLabel = Label(
 		headerFrame,
 		text = "Quanity",
-		font = buttonFont
+		width = 13,
+		font = textHeaderFont
 		)
 	totalPriceLabel = Label(
 		headerFrame,
 		text = "Total",
-		font = buttonFont
+		width = 13,
+		font = textHeaderFont
 		)
-	stockNameLabel.pack(side = LEFT, fill = X, anchor = CENTER, expand = 2.5)
-	stockPriceLabel.pack(side = LEFT, fill = X, anchor = CENTER, expand = 1.0)
-	stockQuanityLabel.pack(side = LEFT, fill = X, anchor = CENTER, expand = 1.0)
-	totalPriceLabel.pack(side = LEFT, fill = X, anchor = CENTER, expand = 1.5)
+	stockNameLabel.pack_propagate(False)
+	stockPriceLabel.pack_propagate(False)
+	stockQuanityLabel.pack_propagate(False)
+	totalPriceLabel.pack_propagate(False)
+	stockNameLabel.pack(side = LEFT, anchor = CENTER)
+	stockPriceLabel.pack(side = LEFT, anchor = CENTER)
+	stockQuanityLabel.pack(side = LEFT, anchor = CENTER)
+	totalPriceLabel.pack(side = LEFT, anchor = CENTER)
 
 	#List Stuff
 	Create_Sales_Record_List(stockOverlayFrame)
 
 	stockOverlayFrame.pack()
+
 
 def Edit_Sales_Record_Callback():
 	
@@ -477,7 +451,7 @@ overlayListElements = [4]
 print(overlayListElements)
 
 #Overlay Elements Master Frame Reference
-overlayElementsMasterFrame = Frame
+overlayElementsMasterFrame = Frame()
 
 #Title Frame Creation
 titleFrame = Frame(
@@ -520,6 +494,8 @@ headingFont = ("Avenir", "26", "bold")
 subHeadingFont = ("Avenir", "20", "bold")
 #dateFont = ("Avenir", "18") If we end up doing a calender drop down box
 textFont = ("Avenir", "12")
+#textHeaderFont = ("Avenir", "12", "bold")
+textHeaderFont = tkfont.Font(family="Avenir", size=12, weight="bold")
 
 #Frame Intialisation
 Initialise_Title_Frame()
