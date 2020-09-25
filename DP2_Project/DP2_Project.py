@@ -1,5 +1,6 @@
 from tkinter import *
 from InsertItem import *
+from InsertSales import *
 
 #Function Declarations
 
@@ -201,8 +202,11 @@ def Add_Stock_Callback():
 	
 
 def Add_Sales_Record_Callback():
-	
+	global acceptState
+	acceptState = 2
+	global overlayElementsMasterFrame
 	Clear_Overlay()
+
 	Lock_Sub_Buttons()
 	Unlock_Accept_Button()
 	Unlock_Cancel_Button()
@@ -219,51 +223,14 @@ def Add_Sales_Record_Callback():
 
 	stockOverlayFrame.pack_propagate(False)
 	Generate_Text_Entry(stockOverlayFrame, "Date", CENTER, 5, (5, 5), 10)
-
-	Create_Empty_Frame(stockOverlayFrame, 50)
-
-	#Move to a function later
-
-	#Header Frame
-	headerFrame = Frame(
-		stockOverlayFrame,
-		width = 480,
-		height = 10,
-		borderwidth = 2,
-		relief = "ridge"
-		)
-	headerFrame.pack(fill = X)
-	#expand = True
-	#Table Headers
-	stockNameLabel = Label(
-		headerFrame,
-		text = "Stock Name",
-		font = buttonFont,
-		bg = "white"
-		)
-	stockPriceLabel = Label(
-		headerFrame,
-		text = "Price",
-		font = buttonFont
-		)
-	stockQuanityLabel = Label(
-		headerFrame,
-		text = "Quanity",
-		font = buttonFont
-		)
-	totalPriceLabel = Label(
-		headerFrame,
-		text = "Total",
-		font = buttonFont
-		)
-	stockNameLabel.pack(side = LEFT, fill = X, anchor = CENTER, expand = 2.5)
-	stockPriceLabel.pack(side = LEFT, fill = X, anchor = CENTER, expand = 1.0)
-	stockQuanityLabel.pack(side = LEFT, fill = X, anchor = CENTER, expand = 1.0)
-	totalPriceLabel.pack(side = LEFT, fill = X, anchor = CENTER, expand = 1.5)
-
-	#List Stuff
-	Create_Sales_Record_List(stockOverlayFrame)
-
+	Create_Empty_Frame(stockOverlayFrame, 100)
+	Generate_Text_Entry(stockOverlayFrame, "Item ID", W, 5, (0, 5), 20)
+	Create_Empty_Frame(stockOverlayFrame, 20)
+	Generate_Text_Entry(stockOverlayFrame, "Quantity", W, 5, (0, 5), 20)
+	Create_Empty_Frame(stockOverlayFrame, 20)
+	Generate_Text_Entry(stockOverlayFrame, "Total Cost", W, 5, (0, 5), 20)
+	Create_Empty_Frame(stockOverlayFrame, 20)
+	overlayElementsMasterFrame = stockOverlayFrame
 	stockOverlayFrame.pack()
 
 def Edit_Sales_Record_Callback():
@@ -340,6 +307,12 @@ def Accept_Button_Callback():
 		print(Entries[1])
 		print(Entries[2])
 		InsertItem(Entries[1], Entries[2])
+	if acceptState == 2:
+		print(Entries[0])
+		print(Entries[1])
+		print(Entries[2])
+		print(Entries[3])
+		InsertSales(Entries[0], Entries[1], Entries[2], Entries[3])
 		
 	Clear_Overlay()
 	Lock_Sub_Buttons()
