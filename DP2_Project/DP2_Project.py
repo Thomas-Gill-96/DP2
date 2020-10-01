@@ -124,6 +124,8 @@ def Create_Sales_Record_Row(masterFrame, stockName, stockPrice, stockQuanity, to
 
 	#print("Created a row of entries")
 
+
+#this version is only called by display sales record so far
 def Create_Locked_Sales_Record_Row(masterFrame, stockName, stockPrice, stockQuanity, totalPrice, paddingX, paddingY):
 
 	#Frame	
