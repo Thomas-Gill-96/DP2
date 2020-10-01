@@ -71,7 +71,19 @@ def Lock_Sub_Buttons():
 	for button in subMenuFrame.winfo_children():
 		button['state'] = DISABLED
 
+#test functionx
+#def Lock_Text_Entry():
+#	for entry in overlayElementsMasterFrame.winfo_children():
+    		
+		
+#Ideally the above function would be written to lock user input when displaying the text entries
+#however after too many days trying it is now down to an overload variable in Create_Sales_Record_List()
+
+
+
 def Create_Sales_Record_Row(masterFrame, stockName, stockPrice, stockQuanity, totalPrice, paddingX, paddingY):
+	
+	#Frame
 	headerFrame1 = Frame(
 		masterFrame,
 		width = 480,
@@ -80,8 +92,8 @@ def Create_Sales_Record_Row(masterFrame, stockName, stockPrice, stockQuanity, to
 		relief = "ridge"
 		)
 	headerFrame1.pack(fill = X)
-	#expand = True
-	#Table Headers
+
+	#Entries
 	stockNameLabel1 = Entry(
 		headerFrame1,
 		width = 1,
@@ -92,6 +104,7 @@ def Create_Sales_Record_Row(masterFrame, stockName, stockPrice, stockQuanity, to
 		width = 1,
 		font = buttonFont
 		)
+	
 	stockQuanityLabel1 = Entry(
 		headerFrame1,
 		width = 1,
@@ -102,36 +115,71 @@ def Create_Sales_Record_Row(masterFrame, stockName, stockPrice, stockQuanity, to
 		width = 1,
 		font = buttonFont
 		)
+	
 	stockNameLabel1.pack(side = LEFT, fill = X, anchor = CENTER, expand = 2.5)
 	stockPriceLabel1.pack(side = LEFT, fill = X, anchor = CENTER, expand = 1.0)
 	stockQuanityLabel1.pack(side = LEFT, fill = X, anchor = CENTER, expand = 1.0)
 	totalPriceLabel1.pack(side = LEFT, fill = X, anchor = CENTER, expand = 1.5)
 
-	#tempEntry = Entry(
-	#	masterFrame,
-	#	width = textBoxLength,
-	#	borderwidth = 2,
-	#	relief = "sunken",
-	#	font = textFont
-	#	)
 
-	print("Created a row of entries")
+	#print("Created a row of entries")
 
-def Create_Sales_Record_List(masterFrame):
+def Create_Locked_Sales_Record_Row(masterFrame, stockName, stockPrice, stockQuanity, totalPrice, paddingX, paddingY):
+
+	#Frame	
+	headerFrame1 = Frame(
+		masterFrame,
+		width = 480,
+		height = 10,
+		borderwidth = 2,
+		relief = "ridge"
+		)
+	headerFrame1.pack(fill = X)
+
+	#Entries
+	stockNameLabel1 = Entry(
+		headerFrame1,
+		width = 1,
+		font = buttonFont
+		)
 	
-#	
-#	tempMasterFrame = Frame(
-#		masterFrame,
-#		borderwidth = 5,
-#		relief = "ridge"
-#		)
-#	tempMasterFrame.pack(fill = X)
+	stockPriceLabel1 = Entry(
+		headerFrame1,
+		width = 1,
+		font = buttonFont
+		)
+	
+	stockQuanityLabel1 = Entry(
+		headerFrame1,
+		width = 1,
+		font = buttonFont
+		)
+	totalPriceLabel1 = Entry(
+		headerFrame1,
+		width = 1,
+		font = buttonFont
+		)
+
+	stockNameLabel1['state'] = DISABLED
+	stockPriceLabel1['state'] = DISABLED
+	stockQuanityLabel1['state'] = DISABLED
+	totalPriceLabel1['state'] = DISABLED
+
+	stockNameLabel1.pack(side = LEFT, fill = X, anchor = CENTER, expand = 2.5)
+	stockPriceLabel1.pack(side = LEFT, fill = X, anchor = CENTER, expand = 1.0)
+	stockQuanityLabel1.pack(side = LEFT, fill = X, anchor = CENTER, expand = 1.0)
+	totalPriceLabel1.pack(side = LEFT, fill = X, anchor = CENTER, expand = 1.5)
+
+def Create_Sales_Record_List(masterFrame , locked = 0):
+	#print(locked)
 
 	for x in range(0, 4):
-		Create_Sales_Record_Row(masterFrame, x, "", x, "", 20, 10)
-	print("Doing Things")
+		#add if to sleect open or locked
+		if(locked == 1):
+			Create_Locked_Sales_Record_Row(masterFrame, x, "", x, "", 20, 10)
+		else:
+			Create_Sales_Record_Row(masterFrame, x, "", x, "", 20, 10)
 	
-	#overlayElementsMasterFrame = tempMasterFrame
 
 def Add_Stock_Callback():
 	global acceptState
@@ -185,9 +233,11 @@ def Add_Sales_Record_Callback():
 
 	#Move to a function later
 	zeroWidth = textHeaderFont.measure("0")
+
 	#Header Frame
 	labelWidth = (480/4)/zeroWidth
-	print(labelWidth)
+	#print(labelWidth)
+
 	headerFrame = Frame(
 		stockOverlayFrame,
 		width = 480,
@@ -196,8 +246,110 @@ def Add_Sales_Record_Callback():
 		relief = "ridge"
 		)
 	headerFrame.pack(fill = X)
-	#expand = True
-	#Table Headers
+	
+	#Labels
+	stockNameLabel = Label(
+		headerFrame,
+		text = "Stock Name",
+		width = 13,
+		font = textHeaderFont
+		)
+	stockPriceLabel = Label(
+		headerFrame,
+		text = "Price",
+		width = 13,
+		font = textHeaderFont
+		)
+	stockQuanityLabel = Label(
+		headerFrame,
+		text = "Quanity",
+		width = 13,
+		font = textHeaderFont
+		)
+	totalPriceLabel = Label(
+		headerFrame,
+		text = "Total",
+		width = 13,
+		font = textHeaderFont
+		)
+	stockNameLabel.pack_propagate(False)
+	stockPriceLabel.pack_propagate(False)
+	stockQuanityLabel.pack_propagate(False)
+	totalPriceLabel.pack_propagate(False)
+	stockNameLabel.pack(side = LEFT, anchor = CENTER)
+	stockPriceLabel.pack(side = LEFT, anchor = CENTER)
+	stockQuanityLabel.pack(side = LEFT, anchor = CENTER)
+	totalPriceLabel.pack(side = LEFT, anchor = CENTER)
+
+	#Call to the function that selects and genegates the text entry boxes
+	Create_Sales_Record_List(stockOverlayFrame)
+
+	stockOverlayFrame.pack()
+
+def Edit_Sales_Record_Callback():
+	global overlayElementsMasterFrame
+
+	Clear_Overlay()
+	Lock_Sub_Buttons()
+	Unlock_Accept_Button()
+	Unlock_Cancel_Button()
+
+	print("Editing a sales record....")
+	Title_Label_Creation("Edit a Sales Record")
+	stockOverlayFrame = Frame(
+		overlayFrame,
+		width = 480,
+		height = 600,
+		borderwidth = 5,
+		relief = "ridge"
+		)
+	stockOverlayFrame.pack_propagate(False)
+	Generate_Text_Entry(stockOverlayFrame, "Date", CENTER, 5, (5, 5), 10)
+	stockOverlayFrame.pack()
+
+def Display_Sales_Record_Callback():
+	
+	global overlayElementsMasterFrame
+
+	Clear_Overlay()
+	Lock_Sub_Buttons()
+	Unlock_Accept_Button()
+	Unlock_Cancel_Button()
+	Unlock_Export_Button()
+
+	print("Displaying a sales record....")
+	Title_Label_Creation("Sales Record")
+	stockOverlayFrame = Frame(
+		overlayFrame,
+		width = 480,
+		height = 600,
+		borderwidth = 5,
+		relief = "ridge"
+		)
+	stockOverlayFrame.pack_propagate(False)
+
+	overlayElementsMasterFrame = stockOverlayFrame
+	Generate_Text_Entry(stockOverlayFrame, "Date", CENTER, 5, (5, 5), 10)
+
+
+	Create_Empty_Frame(stockOverlayFrame, 50)
+	
+	#Move to a function later
+	zeroWidth = textHeaderFont.measure("0")\
+	
+	#Header Frame
+	labelWidth = (480/4)/zeroWidth
+	#print(labelWidth)
+	headerFrame = Frame(
+		stockOverlayFrame,
+		width = 480,
+		height = 10,
+		borderwidth = 2,
+		relief = "ridge"
+		)
+	headerFrame.pack(fill = X)
+
+	#Labels
 	stockNameLabel = Label(
 		headerFrame,
 		text = "Stock Name",
@@ -232,49 +384,11 @@ def Add_Sales_Record_Callback():
 	totalPriceLabel.pack(side = LEFT, anchor = CENTER)
 
 	#List Stuff
-	Create_Sales_Record_List(stockOverlayFrame)
+	Create_Sales_Record_List(stockOverlayFrame, 1)#the 1 is an oveload to set the text entry fields to disabled
 
-	stockOverlayFrame.pack()
 
-def Edit_Sales_Record_Callback():
-	
-	Clear_Overlay()
-	Lock_Sub_Buttons()
-	Unlock_Accept_Button()
-	Unlock_Cancel_Button()
+	#Lock_Text_Entry() Function incomplete, and now optional. delete if not used
 
-	print("Editing a sales record....")
-	Title_Label_Creation("Edit a Sales Record")
-	stockOverlayFrame = Frame(
-		overlayFrame,
-		width = 480,
-		height = 600,
-		borderwidth = 5,
-		relief = "ridge"
-		)
-	stockOverlayFrame.pack_propagate(False)
-	Generate_Text_Entry(stockOverlayFrame, "Date", CENTER, 5, (5, 5), 10)
-	stockOverlayFrame.pack()
-
-def Display_Sales_Record_Callback():
-	
-	Clear_Overlay()
-	Lock_Sub_Buttons()
-	Unlock_Accept_Button()
-	Unlock_Cancel_Button()
-	Unlock_Export_Button()
-
-	print("Displaying a sales record....")
-	Title_Label_Creation("Sales Record")
-	stockOverlayFrame = Frame(
-		overlayFrame,
-		width = 480,
-		height = 600,
-		borderwidth = 5,
-		relief = "ridge"
-		)
-	stockOverlayFrame.pack_propagate(False)
-	Generate_Text_Entry(stockOverlayFrame, "Date", CENTER, 5, (5, 5), 10)
 	stockOverlayFrame.pack()
 
 def Generate_Sales_Report_Callback():
@@ -521,6 +635,9 @@ textHeaderFont = tkfont.Font(family="Avenir", size=12, weight="bold")
 Initialise_Title_Frame()
 Initialise_Side_Menu_Frame()
 Initialise_Sub_Menu_Frame()
+
+
+
 
 #Pack Order
 sideBarFrame.pack(side = LEFT, fill = BOTH)
