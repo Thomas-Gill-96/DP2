@@ -1,5 +1,5 @@
 from tkinter import *
-#from InsertItem import *
+from InsertItem import *
 import tkinter.font as tkfont
 
 #Function Declarations
