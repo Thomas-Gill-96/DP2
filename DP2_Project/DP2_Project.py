@@ -1,5 +1,6 @@
 from tkinter import *
-from InsertItem import *
+#from InsertItem import *
+from Database_Queries import *
 import tkinter.font as tkfont
 
 #Function Declarations
@@ -212,7 +213,8 @@ def Add_Stock_Callback():
 
 def Add_Sales_Record_Callback():
 	global overlayElementsMasterFrame
-
+	global acceptState
+	acceptState = 2
 	Clear_Overlay()
 	Lock_Sub_Buttons()
 	Unlock_Accept_Button()
@@ -228,7 +230,6 @@ def Add_Sales_Record_Callback():
 		relief = "ridge"
 		)
 	stockOverlayFrame.pack_propagate(False)
-	overlayElementsMasterFrame = stockOverlayFrame
 	Generate_Text_Entry(stockOverlayFrame, "Date", CENTER, 5, (5, 5), 10)
 
 	Create_Empty_Frame(stockOverlayFrame, 50)
@@ -283,13 +284,21 @@ def Add_Sales_Record_Callback():
 	stockQuanityLabel.pack(side = LEFT, anchor = CENTER)
 	totalPriceLabel.pack(side = LEFT, anchor = CENTER)
 
+	overlayContentFrame = Frame(
+		stockOverlayFrame,
+		width = 480
+		)
+	overlayContentFrame.pack(fill = X)
+	overlayElementsMasterFrame = overlayContentFrame
 	#Call to the function that selects and genegates the text entry boxes
-	Create_Sales_Record_List(stockOverlayFrame)
+	Create_Sales_Record_List(overlayContentFrame)
 
 	stockOverlayFrame.pack()
 
 def Edit_Sales_Record_Callback():
 	global overlayElementsMasterFrame
+	global acceptState
+	acceptState = 3
 
 	Clear_Overlay()
 	Lock_Sub_Buttons()
@@ -312,6 +321,8 @@ def Edit_Sales_Record_Callback():
 def Display_Sales_Record_Callback():
 	
 	global overlayElementsMasterFrame
+	global acceptState
+	acceptState = 4
 
 	Clear_Overlay()
 	Lock_Sub_Buttons()
@@ -394,7 +405,10 @@ def Display_Sales_Record_Callback():
 	stockOverlayFrame.pack()
 
 def Generate_Sales_Report_Callback():
-	
+	global overlayElementsMasterFrame
+	global acceptState
+	acceptState = 5
+
 	Clear_Overlay()
 	Lock_Sub_Buttons()
 	Unlock_Accept_Button()
@@ -418,18 +432,40 @@ def Accept_Button_Callback():
 	global acceptState
 	widgets = overlayElementsMasterFrame.winfo_children()
 	Entries = list()
-	for widget in widgets:
-		if widget.winfo_class() == 'Entry':
-			Entries.append(widget.get())
+	
+	
 	if acceptState == 1:
+		for widget in widgets:
+			if widget.winfo_class() == 'Entry':
+				Entries.append(widget.get())
 		# call add item function
 		print(Entries[1])
 		print(Entries[2])
 		InsertItem(Entries[1], Entries[2])
-		
+	elif acceptState == 2:
+		tempList = list()
+		for rowFrame in widgets:
+			tempList.clear()
+			print("Inside elements master frame")
+			print(rowFrame.winfo_class())
+			if rowFrame.winfo_class() == 'Frame':
+				for entry in rowFrame.winfo_children():
+					if((entry.winfo_class() == "Entry") and (entry.get() != "")):
+						tempList.append(entry.get())
+			#addToSales("02/10/2020", tempList[0], tempList[2], tempList[3])
+			print("Added Sales Record")
+
+	elif acceptState == 3:
+		print("Editing a Sales Record")
+	elif acceptState == 4:
+		print("Displaying a Sales Record")
+	elif acceptState == 5:
+		print("Generating Sales Report")
+
 	Clear_Overlay()
 	Lock_Sub_Buttons()
 	print("I Accepted Something")
+
 	
 
 def Cancel_Button_Callback():
