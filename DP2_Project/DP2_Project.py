@@ -297,7 +297,7 @@ def Add_Sales_Record_Callback():
 	stockOverlayFrame.pack()
 
 #Emil's Code
-def Add_Sales_Record_Callback():
+def Add_Sales_Record_Callbackv2():
 	global acceptState
 	acceptState = 2
 	global overlayElementsMasterFrame
@@ -490,7 +490,7 @@ def Accept_Button_Callback():
 			print("Added Sales Record")
 
     #Emil's code
-    elif acceptState == 2:
+	if acceptState == 2:
 		print(Entries[0])
 		print(Entries[1])
 		print(Entries[2])
