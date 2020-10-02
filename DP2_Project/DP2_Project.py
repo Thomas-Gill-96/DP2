@@ -1,5 +1,6 @@
 from tkinter import *
 #from InsertItem import *
+from InsertSales import *
 from Database_Queries import *
 import tkinter.font as tkfont
 
@@ -295,6 +296,39 @@ def Add_Sales_Record_Callback():
 
 	stockOverlayFrame.pack()
 
+#Emil's Code
+def Add_Sales_Record_Callback():
+	global acceptState
+	acceptState = 2
+	global overlayElementsMasterFrame
+	Clear_Overlay()
+
+	Lock_Sub_Buttons()
+	Unlock_Accept_Button()
+	Unlock_Cancel_Button()
+
+	print("Adding a sales record....")
+	Title_Label_Creation("Add a Sales Record")
+	stockOverlayFrame = Frame(
+		overlayFrame,
+		width = 480,
+		height = 600,
+		borderwidth = 5,
+		relief = "ridge"
+		)
+
+	stockOverlayFrame.pack_propagate(False)
+	Generate_Text_Entry(stockOverlayFrame, "Date", CENTER, 5, (5, 5), 10)
+	Create_Empty_Frame(stockOverlayFrame, 100)
+	Generate_Text_Entry(stockOverlayFrame, "Item ID", W, 5, (0, 5), 20)
+	Create_Empty_Frame(stockOverlayFrame, 20)
+	Generate_Text_Entry(stockOverlayFrame, "Quantity", W, 5, (0, 5), 20)
+	Create_Empty_Frame(stockOverlayFrame, 20)
+	Generate_Text_Entry(stockOverlayFrame, "Total Cost", W, 5, (0, 5), 20)
+	Create_Empty_Frame(stockOverlayFrame, 20)
+	overlayElementsMasterFrame = stockOverlayFrame
+	stockOverlayFrame.pack()
+
 def Edit_Sales_Record_Callback():
 	global overlayElementsMasterFrame
 	global acceptState
@@ -454,6 +488,14 @@ def Accept_Button_Callback():
 						tempList.append(entry.get())
 			#addToSales("02/10/2020", tempList[0], tempList[2], tempList[3])
 			print("Added Sales Record")
+
+    #Emil's code
+    elif acceptState == 2:
+		print(Entries[0])
+		print(Entries[1])
+		print(Entries[2])
+		print(Entries[3])
+		InsertSales(Entries[0], Entries[1], Entries[2], Entries[3])
 
 	elif acceptState == 3:
 		print("Editing a Sales Record")
